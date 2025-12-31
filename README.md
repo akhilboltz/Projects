@@ -78,25 +78,15 @@ I conducted a direct "Shootout" between the optimized LSTM and the Transformer o
 
 | Model | MAE (Microns) | Observation |
 | :--- | :--- | :--- |
-| **LSTM (Winner)** | **53.9 µm** | Better at tracking sudden wear spikes in this dataset. |
-| Transformer | 56.9 µm | Smoother predictions but slightly less reactive to local trends. |
+| **LSTM (Winner)** | **54.69 µm** | Better at tracking sudden wear spikes in this dataset. |
+| Transformer | 77.4 µm | Smoother predictions but slightly less reactive to local trends. |
 
 **Conclusion:** For this specific industrial problem with limited samples (~1,000 windows), the simpler **LSTM** outperformed the complex Transformer, proving that *model complexity does not always equal better performance.*
-
-![Result Graph](path_to_your_graph_image.png)
-*(Note: Replace `path_to_your_graph_image.png` with your actual image file)*
 
 ---
 
 ## 🚀 How to Run
-
-1.  **Clone the repository:**
-    ```bash
-    git clone [https://github.com/yourusername/cnc-wear-prediction.git](https://github.com/yourusername/cnc-wear-prediction.git)
-    cd cnc-wear-prediction
-    ```
-
-2.  **Install dependencies:**
+1.  **Install dependencies:**
     ```bash
     pip install pandas numpy tensorflow optuna matplotlib scikit-learn
     ```
