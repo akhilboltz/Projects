@@ -16,7 +16,7 @@ Unlike standard time-series projects, this solution strictly addresses **Domain 
 * **Engineering Rigor:** Implemented **Leave-Group-Out Validation** to ensure zero temporal leakage between training and testing data.
 * **Architecture Analysis:** Designed and benchmarked custom **LSTM** and **Transformer** architectures from scratch using TensorFlow/Keras Subclassing.
 * **Optimization:** Reduced Validation MSE by **16x** using **Bayesian Optimization (Optuna)**.
-* **Result:** Achieved a Mean Absolute Error (MAE) of **53.9 microns** on unseen test tools.
+* **Result:** Achieved a Mean Absolute Error (MAE) of **54.69 microns** on unseen test tools.
 
 ---
 
