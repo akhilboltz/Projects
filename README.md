@@ -1,51 +1,52 @@
-# ⚙️ Machining Advisor (RAG-based Assistant)
+# ⚙️ Machining Advisor: AI-Powered CNC Assistant
 
+![Status](https://img.shields.io/badge/Status-Prototype-orange)
 ![Python](https://img.shields.io/badge/Python-3.10%2B-blue?logo=python&logoColor=white)
-![Streamlit](https://img.shields.io/badge/Streamlit-App-FF4B4B?logo=streamlit&logoColor=white)
-![LangChain](https://img.shields.io/badge/LangChain-RAG-green?logo=langchain&logoColor=white)
-![Ollama](https://img.shields.io/badge/Ollama-Llama3-black?logo=ollama&logoColor=white)
+![Streamlit](https://img.shields.io/badge/Frontend-Streamlit-FF4B4B?logo=streamlit&logoColor=white)
+![RAG](https://img.shields.io/badge/AI-RAG_Architecture-green)
+![Local](https://img.shields.io/badge/Privacy-100%25_Local-lightgrey)
 
-**Machining Advisor** is an AI-powered tool designed for Production Engineers. It uses **Retrieval-Augmented Generation (RAG)** to "read" technical PDF catalogs (like Schnittwerte/Cutting Data) and answer specific questions about cutting speeds, feeds, and material mappings.
-
-Unlike generic AI, this tool is grounded in **your** specific technical documents, reducing hallucinations and providing page-specific citations.
+> **Precision Engineering meets Generative AI.** A local RAG system that ingests complex technical machining catalogs to answer parameters, feeds, and speeds queries with page-level citations.
 
 ---
 
-## 🚀 Why this project?
+## 🛑 The Problem
+Production Engineers face a critical challenge: **General-purpose AI (ChatGPT, Claude) cannot be trusted with CNC parameters.**
 
-Standard LLMs (like ChatGPT) don't know the specific cutting parameters of your workshop's tools. They hallucinate numbers.
-**Machining Advisor** solves this by:
-1.  **Ingesting** complex PDF tables (handling reversed text like "gnilliM" automatically).
-2.  **Storing** data in a local Vector Database (ChromaDB).
-3.  **Retrieving** only the relevant rows (e.g., "Steel Milling speeds") to answer your question.
-
----
-
-## 🛠️ Architecture
-
-The project consists of three main modules:
-
-1.  **`Ingestor.py`**: A custom ETL pipeline using `pdfplumber`.
-    * *Feature:* Fixes reversed text (e.g., "edibrac" -> "carbide").
-    * *Feature:* Flattens complex nested table headers.
-    * *Feature:* Extracts "Tips" found below tables and attaches them to the data.
-2.  **`Vector_Database.py`**: Manages the Knowledge Base.
-    * Embeds text using `all-MiniLM-L6-v2`.
-    * Stores chunks in a persistent `ChromaDB`.
-3.  **`streamlit_app.py`**: The "Face" of the application.
-    * Chat interface powered by **Ollama** (Llama 3, Mistral, etc.).
-    * Adjustable parameters (Temperature, K-Retrieval).
+| Standard LLMs | Machining Advisor |
+| :--- | :--- |
+| ❌ **Hallucinates:** invents cutting speeds that could break tools. | ✅ **Grounded:** Answers *only* using your uploaded catalogs. |
+| ❌ **Generic:** Assumes standard steel properties. | ✅ **Specific:** Understands specific grades (e.g., ISO P, 42CrMo4). |
+| ❌ **Black Box:** No idea where the number came from. | ✅ **Traceable:** Cites the exact page number and table index. |
 
 ---
 
-## 📦 Installation
+## ✨ Key Features
 
-### Prerequisites
-1.  **Python 3.10+** installed.
-2.  **Ollama** installed and running locally.
-    * Pull the model: `ollama pull llama3.1:latest`
+### 1. Advanced Data Ingestion (`Ingestor.py`)
+This isn't just a text reader. It's a custom ETL pipeline built for messy PDF tables.
+* **Reversed Text Fixer:** Automatically detects and corrects corrupted PDF text (e.g., converts `gnilliM` → `Milling`, `edibrac` → `carbide`).
+* **Nested Header Flattening:** Converts complex, multi-row table headers into clean, machine-readable column names.
+* **Context Awareness:** intelligently scrapes "Note" and "Tip" sections below tables and attaches them to the relevant data rows to prevent context loss.
 
-### Step 1: Clone the Repo
-```bash
-git clone [https://github.com/yourusername/machining-advisor.git](https://github.com/yourusername/machining-advisor.git)
-cd machining-advisor
+### 2. Reliable Knowledge Base (`vector_database.py`)
+* **Decoupled Architecture:** Loading, chunking, and storing are separated for modularity.
+* **Semantic Search:** Uses `all-MiniLM-L6-v2` embeddings to understand that "Inox" and "Stainless Steel" are related.
+* **Persistent Storage:** Uses ChromaDB to save the processed knowledge, so you only ingest once.
+
+### 3. Engineer-Centric UI (`streamlit_app.py`)
+* **Adjustable "Strictness":** Control the Temperature to switch between "Creative Brainstorming" and "Strict Fact Retrieval."
+* **Source Transparency:** Every answer includes a "Sources" dropdown showing the raw table data used to generate the response.
+
+---
+
+## 📂 Project Structure
+
+```text
+machining-advisor/
+├── 📄 Ingestor.py            # The "Miner": Extracts & Cleans data from PDFs
+├── 📄 vector_database.py     # The "Librarian": Organizes data into ChromaDB
+├── 📄 streamlit_app.py       # The "Interface": Chat UI for the Engineer
+├── 📄 test_inventory.json    # Intermediate clean data (Auto-generated)
+└── 📂 chroma_db/             # Vector Store (Auto-generated)
+
